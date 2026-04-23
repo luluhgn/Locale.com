@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Locale — See the city. Not the lobby.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --warm-white: #FAF7F2;
+    --terracotta: #C4614A;
+    --terracotta-light: #D4795F;
+    --terracotta-dark: #A04A35;
+    --charcoal: #1C1A18;
+    --warm-gray: #6B6560;
+    --light-gray: #E8E2D9;
+    --sand: #D4C5B0;
+    --black: #0F0D0B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--warm-white);
+    color: var(--charcoal);
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(250, 247, 242, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--light-gray);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--terracotta); }
+
+  .nav-cta {
+    background: var(--terracotta);
+    color: var(--cream);
+    border: none;
+    padding: 14px 32px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--terracotta-dark); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 100px;
+  }
+
+  .hero-left {
+    padding: 80px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--warm-white);
+  }
+
+  .hero-issue {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.2s;
+  }
+  .hero-issue::before { content: ''; width: 32px; height: 1px; background: var(--terracotta); }
+
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 5.5vw, 82px);
+    font-weight: 900;
+    line-height: 1.0;
+    color: var(--charcoal);
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.4s;
+  }
+  .hero-headline em { font-style: italic; color: var(--terracotta); }
+
+  .hero-divider {
+    width: 64px; height: 2px;
+    background: var(--terracotta);
+    margin: 36px 0;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.55s;
+  }
+
+  .hero-sub {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--warm-gray);
+    max-width: 440px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.65s;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 24px;
+    margin-top: 48px;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.8s;
+  }
+
+  .btn-primary {
+    background: var(--terracotta);
+    color: var(--cream);
+    padding: 18px 40px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.25s;
+    border: 2px solid var(--terracotta);
+  }
+  .btn-primary:hover { background: var(--terracotta-dark); border-color: var(--terracotta-dark); transform: translateY(-2px); }
+
+  .btn-outline {
+    color: var(--charcoal);
+    padding: 18px 40px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    border: 2px solid var(--charcoal);
+    transition: all 0.25s;
+  }
+  .btn-outline:hover { background: var(--charcoal); color: var(--cream); }
+
+  .hero-right {
+    background: var(--charcoal);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-right-inner {
+    padding: 80px 64px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.9s;
+  }
+
+  .hero-bg-word {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 28vw;
+    font-weight: 900;
+    color: rgba(255,255,255,0.02);
+    bottom: -60px; left: -20px;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .magazine-stamp {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--terracotta-light);
+    margin-bottom: 32px;
+  }
+
+  .magazine-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 2.8vw, 38px);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--cream);
+  }
+  .magazine-quote strong {
+    font-weight: 700;
+    font-style: normal;
+    color: var(--terracotta-light);
+    display: block;
+    margin-top: 8px;
+  }
+
+  .stat-strip {
+    display: flex;
+    gap: 48px;
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .strip-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--terracotta-light);
+  }
+  .strip-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.3);
+    margin-top: 4px;
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--terracotta);
+    padding: 18px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--cream);
+    letter-spacing: 2px;
+  }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .ticker-dot { margin: 0 28px; opacity: 0.5; }
+
+  /* PROBLEM */
+  .problem {
+    padding: 140px 64px;
+    background: var(--cream);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: start;
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--terracotta); }
+
+  .problem-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(34px, 3.2vw, 50px);
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--charcoal);
+  }
+  .problem-headline em { font-style: italic; color: var(--terracotta); }
+
+  .problem-right { padding-top: 80px; }
+
+  .problem-body {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 17px;
+    line-height: 1.85;
+    color: var(--warm-gray);
+    margin-bottom: 28px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 48px;
+  }
+
+  .stat-card {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 36px 32px;
+    transition: transform 0.3s;
+  }
+  .stat-card:nth-child(2) { background: var(--terracotta); }
+  .stat-card:nth-child(3) { background: var(--terracotta-dark); }
+  .stat-card:hover { transform: translateY(-4px); }
+
+  .stat-big {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--cream);
+  }
+  .stat-card:nth-child(2) .stat-big { color: var(--charcoal); }
+
+  .stat-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(245,240,232,0.6);
+    margin-top: 10px;
+  }
+  .stat-card:nth-child(2) .stat-desc { color: rgba(28,26,24,0.7); }
+
+  /* EDITORIAL */
+  .editorial {
+    padding: 120px 64px;
+    background: var(--warm-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid var(--light-gray);
+    border-bottom: 1px solid var(--light-gray);
+    text-align: center;
+  }
+
+  .editorial-inner { max-width: 860px; }
+
+  .editorial-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 100px;
+    line-height: 0.5;
+    color: var(--terracotta);
+    opacity: 0.18;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .editorial-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 2.8vw, 40px);
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--charcoal);
+  }
+  .editorial-quote strong { font-style: normal; font-weight: 900; color: var(--terracotta); }
+
+  .editorial-source {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-top: 40px;
+  }
+
+  /* HOW */
+  .how {
+    padding: 140px 64px;
+    background: var(--charcoal);
+    color: var(--cream);
+  }
+
+  .how-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 80px;
+  }
+
+  .how-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 4vw, 60px);
+    font-weight: 900;
+    line-height: 1.1;
+  }
+  .how-headline em { font-style: italic; color: var(--terracotta-light); }
+
+  .how-intro {
+    max-width: 340px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.45);
+  }
+
+  .how-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .step {
+    background: var(--charcoal);
+    padding: 56px 48px;
+    position: relative;
+    transition: background 0.35s;
+    overflow: hidden;
+  }
+  .step::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--terracotta);
+    transition: width 0.4s ease;
+  }
+  .step:hover::after { width: 100%; }
+  .step:hover { background: rgba(196,97,74,0.07); }
+
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    position: absolute;
+    top: 24px; right: 32px;
+  }
+
+  .step-icon { font-size: 28px; margin-bottom: 24px; }
+
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--cream);
+  }
+
+  .step-desc {
+    font-size: 15px;
+    line-height: 1.75;
+    color: rgba(245,240,232,0.5);
+  }
+
+  /* GUIDE */
+  .guide {
+    padding: 140px 64px;
+    background: var(--cream);
+  }
+
+  .guide-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: end;
+    margin-bottom: 72px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--light-gray);
+  }
+
+  .guide-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 4.5vw, 62px);
+    font-weight: 900;
+    line-height: 1.05;
+  }
+  .guide-headline em { font-style: italic; color: var(--terracotta); }
+
+  .guide-intro {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--warm-gray);
+  }
+
+  .guide-badge {
+    display: inline-block;
+    margin-top: 20px;
+    background: var(--terracotta);
+    color: var(--cream);
+    padding: 8px 20px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .guide-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .guide-card {
+    background: var(--warm-white);
+    padding: 40px 36px;
+    border-top: 3px solid var(--light-gray);
+    transition: all 0.3s;
+  }
+  .guide-card:nth-child(1) { border-color: var(--terracotta); }
+  .guide-card:nth-child(2) { border-color: var(--charcoal); }
+  .guide-card:nth-child(3) { border-color: var(--terracotta-dark); }
+  .guide-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(28,26,24,0.08); }
+
+  .card-time {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 20px;
+  }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+
+  .card-location {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 20px;
+  }
+
+  .card-desc {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--warm-gray);
+  }
+
+  .card-tag {
+    display: inline-block;
+    margin-top: 24px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid var(--light-gray);
+    color: var(--warm-gray);
+  }
+
+  /* PRICING */
+  .pricing {
+    padding: 140px 64px;
+    background: var(--charcoal);
+    color: var(--cream);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+  }
+
+  .pricing-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 5.5vw, 76px);
+    font-weight: 900;
+    line-height: 1.0;
+  }
+  .pricing-headline em { font-style: italic; color: var(--terracotta-light); }
+
+  .pricing-note {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: rgba(245,240,232,0.4);
+    margin-top: 28px;
+    line-height: 1.6;
+  }
+
+  .comp-list { list-style: none; }
+
+  .comp-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    font-size: 15px;
+  }
+
+  .comp-label { color: rgba(245,240,232,0.55); }
+  .comp-val { font-weight: 600; font-size: 16px; }
+  .comp-val.bad { text-decoration: line-through; color: rgba(245,240,232,0.2); }
+  .comp-val.good { color: var(--terracotta-light); }
+
+  .pricing-cta { margin-top: 48px; }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    padding: 140px 64px;
+    background: var(--warm-white);
+  }
+
+  .testi-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .testi-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 3.5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+  }
+  .testi-headline em { font-style: italic; color: var(--terracotta); }
+
+  .testi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .testi-card {
+    padding: 56px 48px;
+    background: var(--cream);
+    border: 1px solid var(--light-gray);
+    transition: all 0.3s;
+  }
+  .testi-card:nth-child(1) { border-top: 3px solid var(--terracotta); }
+  .testi-card:nth-child(2) { border-top: 3px solid var(--charcoal); }
+  .testi-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(28,26,24,0.06); }
+
+  .testi-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--charcoal);
+    margin-bottom: 32px;
+  }
+
+  .testi-author {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sand);
+  }
+
+  /* FINAL CTA */
+  .final-cta {
+    padding: 180px 64px;
+    background: var(--terracotta);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .final-bg {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 50vw;
+    font-weight: 900;
+    font-style: italic;
+    color: rgba(0,0,0,0.06);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .final-eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .final-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 110px);
+    font-weight: 900;
+    line-height: 0.95;
+    color: var(--cream);
+    position: relative;
+    margin-bottom: 8px;
+  }
+
+  .final-headline-2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 110px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 0.95;
+    color: rgba(245,240,232,0.55);
+    position: relative;
+    margin-bottom: 56px;
+  }
+
+  .final-sub {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: rgba(245,240,232,0.75);
+    margin-bottom: 56px;
+    position: relative;
+  }
+
+  .btn-cream {
+    background: var(--cream);
+    color: var(--terracotta-dark);
+    padding: 20px 56px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .btn-cream:hover { background: var(--charcoal); color: var(--cream); transform: translateY(-3px); }
+
+  footer {
+    padding: 48px 64px;
+    background: var(--black);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+
+  .footer-tagline {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    color: rgba(245,240,232,0.3);
+    font-size: 15px;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(245,240,232,0.2);
+    letter-spacing: 1px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.85s ease, transform 0.85s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.12s; }
+  .reveal-delay-2 { transition-delay: 0.22s; }
+  .reveal-delay-3 { transition-delay: 0.32s; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Locale</a>
+  <ul class="nav-links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#guide">Sample guide</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <a href="#demo" class="nav-cta">Book a Demo</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-issue">The Anti-Tourist Platform for Business Travelers</p>
+    <h1 class="hero-headline">See the city.<br><em>Not the lobby.</em></h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub">You fly there for work. You deserve to actually experience where you land. Real recommendations, from real locals, filtered around your real schedule.</p>
+    <div class="hero-actions">
+      <a href="#demo" class="btn-primary">Book a Demo</a>
+      <a href="#guide" class="btn-outline">See Sample Guide</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg-word">L</div>
+    <div class="hero-right-inner">
+      <p class="magazine-stamp">★ Locale Daily Brief — Paris Edition</p>
+      <p class="magazine-quote">"You've been to Paris five times for work.<strong>Have you actually seen it?</strong></p>
+      <div class="stat-strip">
+        <div>
+          <div class="strip-num">81%</div>
+          <div class="strip-label">Ate at hotel</div>
+        </div>
+        <div>
+          <div class="strip-num">3%</div>
+          <div class="strip-label">Memorable trips</div>
+        </div>
+        <div>
+          <div class="strip-num">0%</div>
+          <div class="strip-label">Planned it</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    See the city. Not the lobby.<span class="ticker-dot">◆</span>
+    Travel for work. Explore like a local.<span class="ticker-dot">◆</span>
+    No TripAdvisor. No tourists. No excuses.<span class="ticker-dot">◆</span>
+    Real locals. Real recommendations. Real cities.<span class="ticker-dot">◆</span>
+    See the city. Not the lobby.<span class="ticker-dot">◆</span>
+    Travel for work. Explore like a local.<span class="ticker-dot">◆</span>
+    No TripAdvisor. No tourists. No excuses.<span class="ticker-dot">◆</span>
+    Real locals. Real recommendations. Real cities.<span class="ticker-dot">◆</span>
+  </div>
+</div>
+
+<section class="problem">
+  <div>
+    <p class="section-eyebrow reveal">The Problem</p>
+    <h2 class="problem-headline reveal">Your itinerary ends when the meeting does.<br><em>Ours begins.</em></h2>
+  </div>
+  <div class="problem-right">
+    <p class="problem-body reveal">The average business traveler spends 3 to 5 days in a city. Their only tools? TripAdvisor, Google Maps, and a hotel concierge who recommends the place next door. They end up eating within 200 meters of their hotel every single night.</p>
+    <p class="problem-body reveal">It's not laziness. It's a lack of the right guide.</p>
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-big">81%</div>
+        <div class="stat-desc">ate within 200m of their hotel on their last work trip</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-big">67%</div>
+        <div class="stat-desc">never explored a neighborhood outside the business district</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-big">43%</div>
+        <div class="stat-desc">can't name a local restaurant in a city they've visited 5+ times</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-big">3%</div>
+        <div class="stat-desc">say their last work trip was genuinely memorable</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="editorial">
+  <div class="editorial-inner">
+    <span class="editorial-mark reveal">"</span>
+    <p class="editorial-quote reveal">You negotiated a million-dollar deal. You still let Google Maps choose your restaurant. <strong>There's a better way.</strong></p>
+    <p class="editorial-source reveal">— Every business traveler, before they found Locale</p>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="how-top">
+    <h2 class="how-headline reveal">How it <em>works.</em></h2>
+    <p class="how-intro reveal">Three steps between landing and actually living the city you're in.</p>
+  </div>
+  <div class="how-steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-icon">🧭</div>
+      <h3 class="step-title">Built by real locals</h3>
+      <p class="step-desc">Every recommendation comes from verified residents — not influencers, not algorithms. People who actually live there and know the places that don't show up on any list.</p>
+    </div>
+    <div class="step reveal reveal-delay-1">
+      <div class="step-num">02</div>
+      <div class="step-icon">⏱</div>
+      <h3 class="step-title">Filtered by your schedule</h3>
+      <p class="step-desc">Locale syncs with your calendar and finds your free windows. A two-hour gap on Tuesday. A free evening after dinner. It knows when you're free. It tells you where to go.</p>
+    </div>
+    <div class="step reveal reveal-delay-2">
+      <div class="step-num">03</div>
+      <div class="step-icon">💼</div>
+      <h3 class="step-title">Deployed by your company</h3>
+      <p class="step-desc">One B2B subscription. Every traveling employee. Every city on earth. HR deploys it in minutes. Your team gets the local knowledge that used to take years to build.</p>
+    </div>
+  </div>
+</section>
+
+<section class="guide" id="guide">
+  <div class="guide-header">
+    <div>
+      <p class="section-eyebrow reveal">Sample Guide</p>
+      <h2 class="guide-headline reveal">48 hours in <em>Paris,</em> done properly.</h2>
+    </div>
+    <div class="reveal">
+      <p class="guide-intro">This is what a Locale guide looks like for a traveler with two free windows and a taste for the real city — not the postcard version.</p>
+      <span class="guide-badge">Batignolles Edition</span>
+    </div>
+  </div>
+  <div class="guide-cards">
+    <div class="guide-card reveal">
+      <div class="card-time">Monday Evening</div>
+      <div class="card-name">Le Bal Café</div>
+      <div class="card-location">Batignolles, 17th</div>
+      <div class="card-desc">A local wine bar that fills up with actual Parisians after 8pm. Zero tourists. Great natural wine. The kind of place you'd only find if someone who lives there told you.</div>
+      <span class="card-tag">8 min from city center</span>
+    </div>
+    <div class="guide-card reveal reveal-delay-1">
+      <div class="card-time">Tuesday, 2hr gap</div>
+      <div class="card-name">Square des Batignolles</div>
+      <div class="card-location">Best kept secret, 17th</div>
+      <div class="card-desc">The park locals escape to when they want to forget the rest of Paris exists. Grab a coffee at the corner café. Walk slowly. Pretend you live here.</div>
+      <span class="card-tag">Hidden gem</span>
+    </div>
+    <div class="guide-card reveal reveal-delay-2">
+      <div class="card-time">Tuesday Night</div>
+      <div class="card-name">Le Bal Blomet</div>
+      <div class="card-location">Jazz bar, 15th arrondissement</div>
+      <div class="card-desc">An authentic jazz bar running since the 1920s. Real musicians, real crowd, still going at 1am. The kind of night you'll tell people about when you get home.</div>
+      <span class="card-tag">Open until 1am</span>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div>
+    <p class="section-eyebrow" style="color:var(--terracotta-light)">Pricing</p>
+    <h2 class="pricing-headline reveal">$15<br>per seat.<br><em>Per month.</em></h2>
+    <p class="pricing-note reveal">Less than one bad hotel dinner. For every employee, every city, every trip.</p>
+  </div>
+  <div class="reveal">
+    <ul class="comp-list">
+      <li class="comp-item"><span class="comp-label">Hotel room service dinner</span><span class="comp-val bad">$65</span></li>
+      <li class="comp-item"><span class="comp-label">Airport restaurant, one meal</span><span class="comp-val bad">$40</span></li>
+      <li class="comp-item"><span class="comp-label">Replacing a burnt-out executive</span><span class="comp-val bad">$150,000</span></li>
+      <li class="comp-item"><span class="comp-label">Locale, per traveling employee</span><span class="comp-val good">$15/month</span></li>
+    </ul>
+    <div class="pricing-cta"><a href="#demo" class="btn-primary">Get started today</a></div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="testi-header">
+    <p class="section-eyebrow reveal" style="justify-content:center">What they say</p>
+    <h2 class="testi-headline reveal">Real travelers. <em>Real stories.</em></h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <p class="testi-text">"I've been to Tokyo four times for work. Locale showed me a ramen shop in Shimokitazawa I'd never have found alone. I'm a completely different traveler now."</p>
+      <p class="testi-author">— VP of Sales, Enterprise Technology</p>
+    </div>
+    <div class="testi-card reveal reveal-delay-1">
+      <p class="testi-text">"We deployed Locale across our 300-person sales team. Absenteeism after work trips dropped 23% in the first quarter. We genuinely did not see that coming."</p>
+      <p class="testi-author">— Chief People Officer, Fortune 500 Company</p>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta" id="demo">
+  <div class="final-bg">Go</div>
+  <p class="final-eyebrow reveal">★ The world is waiting</p>
+  <h2 class="final-headline reveal">Stop being</h2>
+  <h2 class="final-headline-2 reveal">a tourist.</h2>
+  <p class="final-sub reveal">Your next city deserves better than your hotel lobby.</p>
+  <a href="#" class="btn-cream reveal">Book a Demo →</a>
+</section>
+
+<footer>
+  <div class="footer-logo">Locale</div>
+  <div class="footer-tagline">Travel for work. Explore like a local.</div>
+  <div class="footer-copy">© 2025 Locale Inc.</div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
